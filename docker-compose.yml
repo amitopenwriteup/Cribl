@@ -1,0 +1,48 @@
+services:
+  cribl-leader:
+    image: cribl/cribl:latest
+    container_name: cribl-leader
+    hostname: cribl-leader
+    ports:
+      - "9000:9000"
+      - "4200:4200"
+    environment:
+      - CRIBL_DIST_MODE=leader
+      - CRIBL_DIST_LEADER_URL=tcp://criblmaster@0.0.0.0:4200
+    networks:
+      - cribl-lab
+    # no mount needed here — leader doesn't run collector jobs
+
+  cribl-worker-1:
+    image: cribl/cribl:latest
+    container_name: cribl-worker-1
+    hostname: cribl-worker-1
+    ports:
+      - "9001:9000"
+    environment:
+      - CRIBL_DIST_LEADER_URL=tcp://criblmaster@cribl-leader:4200
+    volumes:                                  # <-- add this key here
+      - /var/log/nginx:/var/log/nginx:ro      # <-- and this line under it
+    depends_on:
+      - cribl-leader
+    networks:
+      - cribl-lab
+
+  cribl-worker-2:
+    image: cribl/cribl:latest
+    container_name: cribl-worker-2
+    hostname: cribl-worker-2
+    ports:
+      - "9002:9000"
+    environment:
+      - CRIBL_DIST_LEADER_URL=tcp://criblmaster@cribl-leader:4200
+    volumes:                                  # <-- and same here
+      - /var/log/nginx:/var/log/nginx:ro
+    depends_on:
+      - cribl-leader
+    networks:
+      - cribl-lab
+
+networks:
+  cribl-lab:
+    driver: bridge
