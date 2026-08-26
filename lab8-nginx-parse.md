@@ -395,9 +395,11 @@ Click **Add Field** for each row below and fill in **Name** / **Value Expression
 | Name | Value Expression |
 |---|---|
 | `response_time_seconds` | `0.1` (hardcoded for demo; in real scenarios you'd parse from logs if available) |
-| `is_error` | `if(status >= 400, "true", "false")` |
-| `bytes_mb` | `round(tonumber(bytes) / (1024 * 1024), 2)` |
-| `request_summary` | `concat(method, " ", uri, " -> ", status)` |
+| `is_error` | `status >= 400 ? "true" : "false"` |
+| `bytes_mb` | `Math.round((Number(bytes) / (1024 * 1024)) * 100) / 100` |
+| `request_summary` | `` `${method} ${uri} -> ${status}` `` |
+
+> **Important:** The **Value Expression** field is plain **JavaScript**, not an SPL-style function language. There's no built-in `if()`, `concat()`, `round()`, or `tonumber()` — use a JS ternary (`condition ? a : b`), template literals (`` `${a} ${b}` ``) or string concatenation (`a + b`), and `Math.round()` / `Number()` instead. If a row shows a red warning icon next to the expression, it usually means the syntax isn't valid JS — check it against the forms above.
 
 Leave **Enabled** toggled ON for each row (it's on by default).
 
