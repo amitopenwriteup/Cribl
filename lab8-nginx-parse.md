@@ -383,31 +383,23 @@ Click **+ Add Function** again.
 
 **Select: Eval**
 
-This function calculates new fields from existing data. Configure multiple eval statements:
+In the Cribl UI, this function's fields are labeled **Name** (not "Output Field") and **Value Expression** (not "Expression"), under an **Evaluate fields** table. Also visible on this screen:
 
-**Expression 1:**
 ```
-Output Field: response_time_seconds
-Expression: 0.1  (hardcoded for demo; in real scenarios you'd parse from logs if available)
-```
-
-**Expression 2:**
-```
-Output Field: is_error
-Expression: if(status >= 400, "true", "false")
+Final:        OFF   (leave off — later functions in the pipeline still need to run)
+Keep fields:  (leave empty — don't restrict fields at this stage)
 ```
 
-**Expression 3:**
-```
-Output Field: bytes_mb
-Expression: round(tonumber(bytes) / (1024 * 1024), 2)
-```
+Click **Add Field** for each row below and fill in **Name** / **Value Expression**:
 
-**Expression 4:**
-```
-Output Field: request_summary
-Expression: concat(method, " ", uri, " -> ", status)
-```
+| Name | Value Expression |
+|---|---|
+| `response_time_seconds` | `0.1` (hardcoded for demo; in real scenarios you'd parse from logs if available) |
+| `is_error` | `if(status >= 400, "true", "false")` |
+| `bytes_mb` | `round(tonumber(bytes) / (1024 * 1024), 2)` |
+| `request_summary` | `concat(method, " ", uri, " -> ", status)` |
+
+Leave **Enabled** toggled ON for each row (it's on by default).
 
 Click **Save**.
 
