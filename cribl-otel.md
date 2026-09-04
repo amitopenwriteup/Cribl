@@ -127,7 +127,6 @@ Swap `traces` for `metrics` or `logs` to generate the other signal types, same f
 
 **Checkpoint:**
 - `docker logs otelcol -f` should show detailed span/metric/log dumps from the `debug` exporter as traffic is sent.
-- Since gprc protocol live data will not come for traces, you just check sources-->log section
-
+- check sources log section 
 
 ---
