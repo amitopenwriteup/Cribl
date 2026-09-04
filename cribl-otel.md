@@ -127,44 +127,7 @@ Swap `traces` for `metrics` or `logs` to generate the other signal types, same f
 
 **Checkpoint:**
 - `docker logs otelcol -f` should show detailed span/metric/log dumps from the `debug` exporter as traffic is sent.
-- Cribl's **Live Data** tab (with Capture already running) should show the same events landing within seconds.
+- Since gprc protocol live data will not come for traces, you just check sources-->log section
+
 
 ---
-
-## 5. Loop it (optional)
-
-```bash
-while true; do
-  docker run --rm --network host \
-    ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:latest traces \
-    --otlp-endpoint 127.0.0.1:4317 --otlp-insecure --duration 20s --rate 5
-  docker run --rm --network host \
-    ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:latest metrics \
-    --otlp-endpoint 127.0.0.1:4317 --otlp-insecure --duration 20s --rate 5
-  docker run --rm --network host \
-    ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:latest logs \
-    --otlp-endpoint 127.0.0.1:4317 --otlp-insecure --duration 20s --rate 5
-  sleep 5
-done
-```
-
----
-
-## Quick diagnostic checklist
-
-| Symptom | Cause / Fix |
-|---|---|
-| `mount ... not a directory` on `docker run` | Stale container/mount from an earlier run where the config file didn't exist yet — `docker rm -f otelcol`, confirm the host file is a real file with `ls -la` / `cat`, then re-run |
-| `write: broken pipe` to Cribl IP | Collector running without `--network host` |
-| `connection refused` to Cribl IP | Cribl Source down/reinitializing, or Protocol/Port mismatch on the Source |
-| Live Data shows nothing despite traffic flowing | Capture wasn't started before sending traffic; Extract toggles off; config saved but not deployed |
-| `debug` exporter shows data, but Cribl shows nothing | Network path confirmed fine — check Cribl Source's Status tab (in/out counters) and Commit & Deploy status next |
-
----
-
-## Clean up
-
-```bash
-docker rm -f otelcol
-rm -f /root/otel-collector-config.yaml
-```
