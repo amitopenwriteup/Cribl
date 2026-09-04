@@ -120,7 +120,7 @@ Look for `Everything is ready. Begin running and processing data.` with no `conn
 docker run --rm --network host \
   ghcr.io/open-telemetry/opentelemetry-collector-contrib/telemetrygen:latest logs \
   --otlp-endpoint 127.0.0.1:4317 --otlp-insecure \
-  --duration 1200s --rate 5
+  --duration 10s --rate 5
 ```
 
 Swap `traces` for `metrics` or `logs` to generate the other signal types, same flags otherwise.
