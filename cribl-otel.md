@@ -128,5 +128,5 @@ Swap `traces` for `metrics` or `logs` to generate the other signal types, same f
 **Checkpoint:**
 - `docker logs otelcol -f` should show detailed span/metric/log dumps from the `debug` exporter as traffic is sent.
 - check sources log section 
-
+- Live Data tab shows your actual OTel pipeline events (traces/logs/metrics from telemetrygen) arriving as individual events, not batched. 
 ---
