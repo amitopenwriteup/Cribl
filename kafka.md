@@ -147,7 +147,7 @@ Add this **after** the Lookup Function:
 2. Configure it:
    - **Time window:** `60s`
    - **Aggregates:** click into the left-hand output-field-name box and type `event_count`; in the adjacent expression box type `count()`
-     - Row should read: `event_count` = `count()`
+     - Row should read:  `count()`
    - **Group by fields:** `host`
    - (Optional) add a second aggregate like `first(department)` → `department` now that Lookup has already run and that field exists
 3. Click **Save**
